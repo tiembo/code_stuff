@@ -1,3 +1,5 @@
 *.class
 *.swp
 .rvmrc
+.idea
+*.iml
