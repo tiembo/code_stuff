@@ -2,7 +2,6 @@ import java.io.*;
 
 public class fizzbuzz {
   public static void main (String[] args) throws IOException {
-
     File file = new File(args[0]);
     BufferedReader in = new BufferedReader(new FileReader(file));
     String line;
