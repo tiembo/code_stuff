@@ -55,54 +55,52 @@ class AirtimeChallenge
   end
 end
 
-class Subsequence
-  def initialize(ary)
-    @sequence = ary
-    @subsequences = Hash.new {|h,k| h[k] = []}
-    @longest_subsequence_length = 0
-  end
-
-  def sum_of_longest_increasing
-
-    # stop calculating subsequences once the initial array is shorter than
-    # the length of the longest subsequence
-    while @sequence.length >= @longest_subsequence_length
-      calculate_subsequence
-    end
-
-    candidate_subsequences = @subsequences[@subsequences.keys.max]
-    candidate_subsequences.map{|i| i.reduce(:+)}.max
-  end
-
-  private
-
-  def calculate_subsequence
-    smallest_number = @sequence.shift
-    subsequence = [smallest_number]
-
-    @sequence.each do |i|
-      if i > smallest_number
-        smallest_number = i
-        subsequence << i
+class Array
+  def all_increasing_subsequences
+    if self.length < 2
+      []
+    else
+      main_array = []
+      2.upto(self.length) do |i|
+        #puts "trying length #{i}"
+        arrays = self.combination(i).select{|a| a.is_sorted?}
+        if arrays.empty?
+          break
+        else
+          main_array += arrays
+        end
       end
-    end
-
-    if subsequence.length >= @longest_subsequence_length
-      @longest_subsequence_length = subsequence.length
-      @subsequences[subsequence.length] << subsequence
+      main_array.to_a
     end
   end
+
+  def longest_increasing_subsequences
+    array = self
+    subsequences = Hash.new {|h,k| h[k] = []}
+    array.all_increasing_subsequences.each do |ary|
+      subsequences[ary.length] << ary
+    end
+    subsequences[subsequences.keys.max]
+  end
+
+  def is_sorted?
+    self.sort == self
+  end
+end
+
+# placeholder
+class Subsequence
 end
 
 #=============================================================================
 # main
 #=============================================================================
 
-email = ARGV[0]
-if email == nil
-  puts "Usage: #{__FILE__} <email address>"
-  exit
-end
+#email = ARGV[0]
+#if email == nil
+#  puts "Usage: #{__FILE__} <email address>"
+#  exit
+#end
 
-sequence = AirtimeChallenge.new(email).sequence
-puts Subsequence.new(sequence).sum_of_longest_increasing
+#sequence = AirtimeChallenge.new(email).sequence
+#puts Subsequence.new(sequence).sum_of_longest_increasing
