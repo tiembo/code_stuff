@@ -84,7 +84,20 @@ class Array
   end
 
   def is_sorted?
-    self.sort == self
+    if self.length < 2
+      true
+    else
+      ary = self.dup
+      last = ary.shift
+      ary.each do |i|
+        if i >= last
+          last = i
+        else
+          return false
+        end
+      end
+      true
+    end
   end
 end
 
